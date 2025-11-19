@@ -1,26 +1,42 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { listPokemons } from './services/pokeAPI';
+import { IndexedPokemon } from './services/pokeAPI.types';
+import { FlatList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function App() {
-  const [pokemons, setPokemons] = useState<string[]>([])
-
+function usePokemons(){
+  const [pokemons, setPokemons] = useState<IndexedPokemon[]>([])
+  
   useEffect(() => {
     const fetchPokemons = async () => {
-      const response = await listPokemons()
-      if (!response || !response.results) return
-      const items = response.results.map(item => item.name)
-      setPokemons(items)
+      try {
+        const response = await listPokemons()
+        if (!response || !response.results) return
+        setPokemons(response.results)
+      } catch (error) {
+        console.error('Error fetching pokemons:', error);
+      }
     }
     fetchPokemons()
   }, [])
 
+  return pokemons
+}
+
+export default function App() {
+  const pokemons = usePokemons()
+
   return (
-    <View style={styles.container}>
-      {pokemons.map((name) => (
-        <Text key={name}>{name}</Text>
-      ))}
-    </View>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <FlatList data={pokemons}
+          keyExtractor={(item: IndexedPokemon) => item.id.toString()}
+          renderItem={({ item } : {item: IndexedPokemon} ) => <Text>{`${item.id} ${item.name}`}</Text>}
+        />
+      </View>
+    </SafeAreaView>
+    
   );
 }
 
