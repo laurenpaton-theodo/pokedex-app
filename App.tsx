@@ -28,15 +28,14 @@ export default function App() {
   const pokemons = usePokemons()
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View>
         <FlatList data={pokemons}
           keyExtractor={(item: IndexedPokemon) => item.id.toString()}
           renderItem={({ item } : {item: IndexedPokemon} ) => <Text>{`${item.id} ${item.name}`}</Text>}
         />
       </View>
     </SafeAreaView>
-    
   );
 }
 
