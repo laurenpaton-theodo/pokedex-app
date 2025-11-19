@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { listPokemons } from './services/pokeAPI';
 import { IndexedPokemon } from './services/pokeAPI.types';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PokemonCard from './components/PokemonCard';
 
 function usePokemons(){
   const [pokemons, setPokemons] = useState<IndexedPokemon[]>([])
@@ -32,7 +33,8 @@ export default function App() {
       <View>
         <FlatList data={pokemons}
           keyExtractor={(item: IndexedPokemon) => item.id.toString()}
-          renderItem={({ item } : {item: IndexedPokemon} ) => <Text>{`${item.id} ${item.name}`}</Text>}
+          renderItem={({ item } : { item: IndexedPokemon } ) => <PokemonCard name={item.name} id={item.id}/>}
+          ItemSeparatorComponent={() => <View style={{ height: 16 }} />} // 16px vertical space
         />
       </View>
     </SafeAreaView>
@@ -41,7 +43,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
