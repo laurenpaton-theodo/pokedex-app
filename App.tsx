@@ -1,11 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { listPokemons } from './services/pokeAPI';
 
 export default function App() {
+  const [pokemons, setPokemons] = useState<string[]>([])
+
+  useEffect(() => {
+    const fetchPokemons = async () => {
+      const response = await listPokemons()
+      if (!response || !response.results) return
+      const items = response.results.map(item => item.name)
+      setPokemons(items)
+    }
+    fetchPokemons()
+  }, [])
+
   return (
     <View style={styles.container}>
-      <Text>Bonsoir</Text>
-      <StatusBar style="auto" />
+      {pokemons.map((name) => (
+        <Text key={name}>{name}</Text>
+      ))}
     </View>
   );
 }
