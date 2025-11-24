@@ -12,7 +12,6 @@ export default function Route() {
     const pokemonName = Array.isArray(name) ? name[0] : name;
 
     const pokemonDetails = usePokemonInfo(pokemonUrl);
-
     const router = useRouter()
     
     return (
