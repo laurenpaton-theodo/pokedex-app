@@ -6,8 +6,22 @@ import { IndexedPokemon } from "../services/pokeAPI.types";
 
 const Stack = createNativeStackNavigator({
     screens: {
-        Home: Pokedex,
-        PokemonDetails: PokemonDetails
+        Home: {
+            screen: Pokedex, 
+            options: { title: 'Pokedex' }
+        }, 
+        PokemonDetails: {
+            screen: PokemonDetails, 
+            options(props) {
+                const { route } = props;
+                const { pokemon } = route.params as { pokemon: IndexedPokemon };
+                return {
+                    title: pokemon.name.toUpperCase(),
+                    headerBackVisible: false
+                }
+            },
+            
+        }
     }
 });
 

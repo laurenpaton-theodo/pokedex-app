@@ -13,3 +13,15 @@ export type NamedAPIResource = {
 export type IndexedPokemon = NamedAPIResource & { 
     id: number
 }
+
+export type RootStackParamList = {
+    Home: undefined;
+    PokemonDetails: { pokemon: IndexedPokemon };
+}
+
+export type PokemonInfo = { 
+    abilities: { ability: { name: string } }[];
+    cries: string[];
+    types: string[];
+    species: string;
+}
